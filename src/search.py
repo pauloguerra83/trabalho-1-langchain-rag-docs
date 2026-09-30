@@ -17,6 +17,8 @@ _vector_store = None
 def _get_vector_store():
     global _embeddings, _vector_store
     if _vector_store is None:
+        if not DATABASE_URL:
+            raise RuntimeError("Defina DATABASE_URL no arquivo .env")
         _embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL)
         _vector_store = PGVector(
             embeddings=_embeddings,
